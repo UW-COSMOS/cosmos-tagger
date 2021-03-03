@@ -5,14 +5,12 @@ services:
     depends_on:
       - image-tagger-api
     volumes:
-      - ./_data/logs:/logs
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./to_be_tagged:/images/
     ports:
       - 8080:80
   image-tagger-api:
-    build: api
-    image: iaross/tagger_api
+    image: iaross/tagger_api:dev
     environment:
       # This should be changeable obviously
       - IMAGE_TAGGER_API_MODE=annotate
@@ -24,10 +22,12 @@ services:
       - ./api:/debug-src
     ports:
       - 8081:5454
+    command: "node index.js"
   db:
     image: mdillon/postgis:11
     volumes:
       - ./pg_data/:/var/lib/postgresql/data
+      - ./init-sql:/docker-entrypoint-initdb.d/
     environment:
       - POSTGRES_DB=annotations
     ports:
