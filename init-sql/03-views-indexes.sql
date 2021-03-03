@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS model_results;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
-DROP MATERIALIZED VIEW model_results.entity;
+DROP MATERIALIZED VIEW IF EXISTS  model_results.entity;
 CREATE MATERIALIZED VIEW model_results.entity AS
 WITH a AS (
 SELECT
