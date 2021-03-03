@@ -11,7 +11,7 @@ services:
     ports:
       - 8080:80
   image-tagger-api:
-    image: iaross/tagger_api:dev
+    image: iaross/tagger_api
     environment:
       # This should be changeable obviously
       - IMAGE_TAGGER_API_MODE=annotate
