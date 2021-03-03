@@ -5,6 +5,7 @@ services:
     depends_on:
       - image-tagger-api
     volumes:
+      - ./logs:/logs
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./to_be_tagged:/images/
     ports:
