@@ -1,19 +1,14 @@
 ```
-# If you want to tag a bunch of documents, organized under a "tagging_push_2021" dataset name:
-mkdir -p to_be_tagged/pdfs/tagging_push_2021
+# If you want to tag a bunch of documents, organized under a "tagging_push_2023" dataset name:
+mkdir -p to_be_tagged/pdfs/tagging_push_2023
 
 docker-compose up
 
-# In another terminal or in Finder or whatever, cp the pdfs into to_be_tagged/pdfs/tagging_push_2021
+# In another terminal or in Finder, copy the pdfs into to_be_tagged/pdfs/tagging_push_2023. This will kick off some mild processing in the background to split the PDF into page-level images, and add them to the backend for processing. After a few minutes, they should be visible when you select the "Tag" option on localhost:8080.
 
-# Then visit localhost:8080 and go crazy.
-
-# TODO: adding users
-
-# Data is persiststed in ./pg_data
 ```
 
-Data can be dumped in XML+PNG format for model training by:
+Data is persisted in ./pg_data, but can be dumped in XML+PNG format for model training by:
 
 ```
 docker cp dump_to_xml.py cosmos-tagger_import_data_1:/src/
@@ -21,6 +16,8 @@ docker exec cosmos-tagger_import_data_1 python dump_to_xml.py /data/pngs/ /data/
 ```
 
 Now the annotations are sitting in your local host in `to_be_tagged/dump`. Improvements for this step to come soon.
+
+
 
 
 # Database changes
