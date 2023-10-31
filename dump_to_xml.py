@@ -13,7 +13,7 @@ import psycopg2, psycopg2.extras
 import os, sys
 from PIL import Image
 from shutil import copyfile
-conn = psycopg2.connect("host=db port=5432 dbname=annotations user=postgres")
+conn = psycopg2.connect("host=tagger-pg port=5432 dbname=annotations user=postgres")
 cur_images = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
@@ -52,6 +52,7 @@ if __name__ == '__main__':
         FILENAME = E.filename
         SIZE = E.size
         OBJ = E.object
+        PAGE = E.page
         cur.execute("SELECT * FROM image WHERE image_id=%s", (image["image_id"], ))
         img = cur.fetchone()
         try:
@@ -68,6 +69,7 @@ if __name__ == '__main__':
                 FOLDER("COSMOS_annotated"),
                 FILENAME(image["image_id"] + ".png"),
                 SIZE(E.width(str(width)), E.height(str(height))),
+                PAGE(str(img['page_no'])),
                 )
         cur.execute("SELECT *, bbox_array(geometry) bboxes FROM image_tag INNER JOIN tag ON image_tag.tag_id=tag.tag_id WHERE image_stack_id=%s", (image["image_stack_id"],))
         for img_tag in cur:
