@@ -66,7 +66,7 @@ if __name__ == '__main__':
         width, height = imge.size
 
         the_doc = ROOT(
-                FOLDER("COSMOS_annotated"),
+                FOLDER(str(img['doc_id'])),
                 FILENAME(image["image_id"] + ".png"),
                 SIZE(E.width(str(width)), E.height(str(height))),
                 PAGE(str(img['page_no'])),
