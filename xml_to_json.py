@@ -5,7 +5,7 @@ Author: Keshav Balaji
 Description: Standalone Python script to parse an xml file of annotations and write
 the data to a corresponding json file
 
-Usage: python3 xml_to_json.py <xml filename>
+Usage: to be called by another Python program
 """
 
 import json
@@ -48,14 +48,14 @@ class AnnotationBounds(BaseModel):
         return self.intersection(other) / self.union(other)
 
 
-def parse_xml() -> list[AnnotationBounds]:
+def parse_xml(xml_file) -> list[AnnotationBounds]:
     """
     Parse through input xml file to read the annotations
     :param bmap: Input xml file
     :return: list of annotations from the xml file
     """
     annotations = []
-    with open(sys.argv[1]) as xml_data:
+    with open(xml_file) as xml_data:
         xml_dict = xmltodict.parse(xml_data.read())
         page_num = int(xml_dict['annotation']['page'])
         objects = xml_dict['annotation']['object']
@@ -88,6 +88,3 @@ def create_json(xml_annotations, filename):
         data = [a.dict() for a in xml_annotations]
         data.sort(key=lambda x: x['page_num'])
         json_out.write(json.dumps(data, indent=2))
-
-annotations, filename = parse_xml()
-create_json(annotations, filename)

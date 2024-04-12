@@ -14,6 +14,7 @@ import os
 import shutil
 import sys
 import subprocess
+from xml_to_json import parse_xml, create_json
 
 script_dir = os.getcwd()
 dir_path = sys.argv[1]
@@ -29,12 +30,10 @@ for xml_file in xml_files:
     doctype = xmldoc.getElementsByTagName('folder')[0].firstChild.nodeValue
     pdf_file = doctype + '.pdf'
     pdf_directory_path = './' + doctype + '/'
-    if os.path.exists(pdf_directory_path):
-        shutil.move(xml_file, pdf_directory_path + xml_file)
-    else:
+    if not os.path.exists(pdf_directory_path):
         os.makedirs(pdf_directory_path)
         shutil.move(pdf_file, pdf_directory_path + pdf_file)
-        shutil.move(xml_file, pdf_directory_path + xml_file)
+    shutil.move(xml_file, pdf_directory_path + xml_file)
 
 # create json files with the information from their corresponding xml files
 for file in os.listdir('.'):
@@ -43,9 +42,6 @@ for file in os.listdir('.'):
     os.chdir('./' + file + '/')
     xml_files = glob.glob('*.xml')
     for xml_file in xml_files:
-        subprocess.run(['python3', script_dir + '/xml_to_json.py', xml_file])
+        annotations, filename = parse_xml(xml_file)
+        create_json(annotations, filename)
     os.chdir('..')
-
-
-
-
